@@ -94,6 +94,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
 
       console.log('accordionTrigger:', thisProduct.accordionTrigger);
       console.log('form:', thisProduct.form);
@@ -195,6 +196,25 @@ thisProduct.cartButton.addEventListener('click', function(event){
         console.log('Subtracting option price:', option.price);
         price -= option.price;
       }
+
+      // find matching image
+      const optionImage = thisProduct.element.querySelector(
+        '.' + paramId + '-' + optionId
+      );
+
+      // check if image exists
+      if(optionImage){
+
+        // show or hide image
+        if(optionSelected){
+          optionImage.classList.add(classNames.menuProduct.imageVisible);
+          console.log('Image shown for:', paramId + '-' + optionId);
+        } else {
+          optionImage.classList.remove(classNames.menuProduct.imageVisible);
+          console.log('Image hidden for:', paramId + '-' + optionId);
+        } 
+      }
+
     }
   }
 
