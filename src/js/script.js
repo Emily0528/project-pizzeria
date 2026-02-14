@@ -252,7 +252,18 @@ thisProduct.cartButton.addEventListener('click', function(event){
       console.log('constructor arguments:', element)
 
       thisWidget.getElements(element);
-      thisWidget.setValue(thisWidget.input.value);
+
+       // ustawienie wartości startowej
+  if(thisWidget.input.value) {             // sprawdzamy, czy input ma wartość
+    thisWidget.setValue(thisWidget.input.value);
+  } else {                                 // jeśli brak, używamy defaultValue
+    thisWidget.setValue(settings.amountWidget.defaultValue);
+  }
+      /* setting the start value taking into account the default value 
+      const initialValue = thisWidget.input.value ? thisWidget.input.value : settings.amountWidget.defaultValue;
+      thisWidget.setValue(initialValue);*/
+      //thisWidget.setValue(thisWidget.input.value);
+
       thisWidget.initActions();
     }
 
@@ -275,9 +286,10 @@ thisProduct.cartButton.addEventListener('click', function(event){
           newValue >= settings.amountWidget.defaultMin &&
           newValue <= settings.amountWidget.defaultMax) {
             thisWidget.value = newValue;
-            thisWidget.input.value = thisWidget.value;
             thisWidget.announce();
         }
+
+        thisWidget.input.value = thisWidget.value;
       }
 
     announce(){
