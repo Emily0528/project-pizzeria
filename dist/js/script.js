@@ -105,72 +105,85 @@
       /* generate HTML based on template */
       const generatedHTML = templates.menuProduct(thisProduct.data);
 
+      thisProduct.dom = {};
+
       /* create element using utils.createElementFromHTML */
-      thisProduct.element = utils.createDOMFromHTML(generatedHTML);
+      thisProduct.dom.wrapper = utils.createDOMFromHTML(generatedHTML);
 
       /* find menu container */
       const menuContainer = document.querySelector(select.containerOf.menu);
 
       /* add element to menu */
-      menuContainer.appendChild(thisProduct.element);
+      menuContainer.appendChild(thisProduct.dom.wrapper);
     }
 
     getElements(){
       const thisProduct = this;
 
-      thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
-      thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
-      thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
-      thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
-      thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
-      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
-      thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
+      thisProduct.dom.accordionTrigger = thisProduct.dom.wrapper.querySelector(select.menuProduct.clickable);
+      thisProduct.dom.form = thisProduct.dom.wrapper.querySelector(select.menuProduct.form);
+      thisProduct.dom.formInputs = thisProduct.dom.form.querySelectorAll(select.all.formInputs);
+      thisProduct.dom.cartButton = thisProduct.dom.wrapper.querySelector(select.menuProduct.cartButton);
+      thisProduct.dom.priceElem = thisProduct.dom.wrapper.querySelector(select.menuProduct.priceElem);
+      thisProduct.dom.imageWrapper = thisProduct.dom.wrapper.querySelector(select.menuProduct.imageWrapper);
+      thisProduct.dom.amountWidgetElem = thisProduct.dom.wrapper.querySelector(select.menuProduct.amountWidget);
 
-      //console.log('accordionTrigger:', thisProduct.accordionTrigger);
-      //console.log('form:', thisProduct.form);
-      //console.log('formInputs:', thisProduct.formInputs);
-      //console.log('cartButton:', thisProduct.cartButton);
-      //console.log('priceElem:', thisProduct.priceElem);
+      //console.log('accordionTrigger:', thisProduct.dom.accordionTrigger);
+      //console.log('form:', thisProduct.dom.form);
+      //console.log('formInputs:', thisProduct.dom.formInputs);
+      //console.log('cartButton:', thisProduct.dom.cartButton);
+      //console.log('priceElem:', thisProduct.dom.priceElem);
     }
-
+  /*  
   initAccordion(){
     const thisProduct = this;
 
-    /* find the clickable trigger (the element that should react to clicking) */
-    const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+    const clickableTrigger = thisProduct.dom.wrapper.querySelector(select.menuProduct.clickable);
 
-    /* START: add event listener to clickable trigger on event click */
     clickableTrigger.addEventListener('click', function(event) {
-      /* prevent default action for event */
+
       event.preventDefault();
 
-      /* find active product (product that has active class) */
       const activeProduct = document.querySelector('.product.' + classNames.menuProduct.wrapperActive);
     
-      //console.log('activeProduct:', activeProduct);
 
-      /* if there is active product and it's not thisProduct.element, remove class active from it */
-      if(activeProduct && activeProduct !== thisProduct.element){
+      
+      if(activeProduct && activeProduct !== thisProduct.dom.wrapper){
       activeProduct.classList.remove(classNames.menuProduct.wrapperActive);
       }
 
-      /* toggle active class on thisProduct.element */
-      thisProduct.element.classList.toggle(classNames.menuProduct.wrapperActive);
+      thisProduct.dom.wrapper.classList.toggle(classNames.menuProduct.wrapperActive);
 
-      
-      //console.log('--- CLICK ---');
-      //console.log('Kliknięty produkt:', thisProduct.element);
-      //console.log('Aktywny produkt:', activeProduct);
-      //console.log('Czy to ten sam?', activeProduct === thisProduct.element);
     });
 
+  }*/
+ initAccordion(){
+    const thisProduct = this;
+
+    thisProduct.dom.accordionTrigger.addEventListener('click', function(event) {
+
+      event.preventDefault();
+
+      const activeProduct = document.querySelector(
+        '.product.' + classNames.menuProduct.wrapperActive
+      );
+
+      if(activeProduct && activeProduct !== thisProduct.dom.wrapper){
+        activeProduct.classList.remove(classNames.menuProduct.wrapperActive);
+      }
+
+      thisProduct.dom.wrapper.classList.toggle(
+        classNames.menuProduct.wrapperActive
+      );
+    });
   }
 
+  /*
    initOrderForm(){
     const thisProduct = this;
     //console.log('Order:', thisProduct)
 
-    thisProduct.form.addEventListener('submit', function(event){
+    thisProduct.dom.form.addEventListener('submit', function(event){
     event.preventDefault();
     //console.log('Form submitted!');
     thisProduct.processOrder();
@@ -183,20 +196,39 @@
   });
 }
 
-thisProduct.cartButton.addEventListener('click', function(event){
+thisProduct.dom.cartButton.addEventListener('click', function(event){
   event.preventDefault();
   thisProduct.processOrder();
 });
+  }*/
+ initOrderForm(){
+    const thisProduct = this;
+
+    thisProduct.dom.form.addEventListener('submit', function(event){
+      event.preventDefault();
+      thisProduct.processOrder();
+    });
+
+    for(let input of thisProduct.dom.formInputs){
+      input.addEventListener('change', function(){
+        thisProduct.processOrder();
+      });
+    }
+
+    thisProduct.dom.cartButton.addEventListener('click', function(event){
+      event.preventDefault();
+      thisProduct.processOrder();
+    });
   }
 
   initAmountWidget(){
       const thisProduct = this;
 
-      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+      thisProduct.amountWidget = new AmountWidget(thisProduct.dom.amountWidgetElem);
       //console.log('thisProduct:', thisProduct);
 
       /* listening for the 'updated' event emitted from the widget */
-      thisProduct.amountWidgetElem.addEventListener('updated', function() {
+      thisProduct.dom.amountWidgetElem.addEventListener('updated', function() {
         thisProduct.processOrder(); // wywołanie metody przeliczającej produkt
       });
     }
@@ -206,7 +238,7 @@ thisProduct.cartButton.addEventListener('click', function(event){
     //console.log('OrderForm:', thisProduct);
 
     // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
-    const formData = utils.serializeFormToObject(thisProduct.form);
+    const formData = utils.serializeFormToObject(thisProduct.dom.form);
     //console.log('formData', formData);
 
     // set price to default price
@@ -240,7 +272,7 @@ thisProduct.cartButton.addEventListener('click', function(event){
       }
 
       // find matching image
-      const optionImage = thisProduct.element.querySelector(
+      const optionImage = thisProduct.dom.wrapper.querySelector(
         '.' + paramId + '-' + optionId
       );
 
@@ -265,13 +297,12 @@ thisProduct.cartButton.addEventListener('click', function(event){
 
   // update calculated price in the HTML
   //console.log('Calculated price:', price);
-  thisProduct.priceElem.innerHTML = price;
+  thisProduct.dom.priceElem.innerHTML = price;
   }
 
  
 }
 
-  //nowa klasa
   class AmountWidget{
     constructor(element){
       const thisWidget = this;
@@ -353,6 +384,26 @@ thisProduct.cartButton.addEventListener('click', function(event){
     }
   }
 
+  class Cart{
+    constructor(element){
+      const thisCart = this;
+
+      thisCart.products = [];
+
+      thisCart.getElements(element);
+
+      console.log('new Cart', thisCart);
+    }
+
+    getElements(element){
+      const thisCart = this;
+
+      thisCart.dom = {};
+
+      thisCart.dom.wrapper = element;
+    }
+  }
+
   const app = {
     initMenu: function () {
       const thisApp = this;
@@ -374,7 +425,7 @@ thisProduct.cartButton.addEventListener('click', function(event){
       //console.log("*** App starting ***");
       //console.log("thisApp:", thisApp);
       //console.log("classNames:", classNames);
-      console.log("settings:", settings);
+      //console.log("settings:", settings);
       //console.log("templates:", templates);
 
       thisApp.initData();
