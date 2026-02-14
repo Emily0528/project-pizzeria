@@ -165,7 +165,12 @@ thisProduct.cartButton.addEventListener('click', function(event){
       const thisProduct = this;
 
       thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
-      console.log('thisProduct:', thisProduct);
+      //console.log('thisProduct:', thisProduct);
+
+      /* listening for the 'updated' event emitted from the widget */
+      thisProduct.amountWidgetElem.addEventListener('updated', function() {
+        thisProduct.processOrder(); // wywołanie metody przeliczającej produkt
+      });
     }
 
   processOrder(){
@@ -173,19 +178,19 @@ thisProduct.cartButton.addEventListener('click', function(event){
     //console.log('OrderForm:', thisProduct);
 
     // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
-  const formData = utils.serializeFormToObject(thisProduct.form);
-  //console.log('formData', formData);
+    const formData = utils.serializeFormToObject(thisProduct.form);
+    //console.log('formData', formData);
 
-  // set price to default price
-  let price = thisProduct.data.price;
+    // set price to default price
+    let price = thisProduct.data.price;
 
-  // for every category (param)...
-  for(let paramId in thisProduct.data.params) {
-    // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
-    const param = thisProduct.data.params[paramId];
-    //console.log(paramId, param);
+    // for every category (param)...
+    for(let paramId in thisProduct.data.params) {
+      // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
+      const param = thisProduct.data.params[paramId];
+      //console.log(paramId, param);
 
-    // for every option in this category
+      // for every option in this category
     for(let optionId in param.options) {
       // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
       const option = param.options[optionId];
@@ -227,6 +232,9 @@ thisProduct.cartButton.addEventListener('click', function(event){
     }
   }
 
+   /* multiply price by amount */
+  price *= thisProduct.amountWidget.value;
+
   // update calculated price in the HTML
   //console.log('Calculated price:', price);
   thisProduct.priceElem.innerHTML = price;
@@ -235,15 +243,74 @@ thisProduct.cartButton.addEventListener('click', function(event){
  
 }
 
-//nowa klasa
+  //nowa klasa
   class AmountWidget{
     constructor(element){
       const thisWidget = this;
 
       console.log('AmountWidget:', thisWidget);
       console.log('constructor arguments:', element)
-    };
 
+      thisWidget.getElements(element);
+      thisWidget.setValue(thisWidget.input.value);
+      thisWidget.initActions();
+    }
+
+    getElements(element){
+      const thisWidget = this;
+
+      thisWidget.element = element;
+      thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
+      thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
+      thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
+    }
+    
+    setValue(value) {
+        const thisWidget = this;
+
+        const newValue = parseInt(value);
+
+        
+        if(thisWidget.value !== newValue && !isNaN(newValue) &&
+          newValue >= settings.amountWidget.defaultMin &&
+          newValue <= settings.amountWidget.defaultMax) {
+            thisWidget.value = newValue;
+            thisWidget.input.value = thisWidget.value;
+            thisWidget.announce();
+        }
+      }
+
+    announce(){
+      const thisWidget = this;
+
+      const event = new Event('updated');
+      thisWidget.element.dispatchEvent(event);
+    }
+
+    initActions(){
+      const thisWidget = this;
+  
+
+      if(thisWidget.input){
+        thisWidget.input.addEventListener('change', function() {
+          thisWidget.setValue(thisWidget.input.value);
+         });
+      }
+
+      if(thisWidget.linkDecrease){
+        thisWidget.linkDecrease.addEventListener('click', function(event) {
+          event.preventDefault();
+          thisWidget.setValue(thisWidget.value - 1);
+        });
+      }
+
+      if(thisWidget.linkIncrease){
+        thisWidget.linkIncrease.addEventListener('click', function(event) {
+          event.preventDefault();
+          thisWidget.setValue(thisWidget.value + 1);
+        });
+      }
+    }
   }
 
   const app = {
@@ -267,7 +334,7 @@ thisProduct.cartButton.addEventListener('click', function(event){
       //console.log("*** App starting ***");
       //console.log("thisApp:", thisApp);
       //console.log("classNames:", classNames);
-      //console.log("settings:", settings);
+      console.log("settings:", settings);
       //console.log("templates:", templates);
 
       thisApp.initData();
