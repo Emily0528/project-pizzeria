@@ -201,7 +201,7 @@ thisProduct.dom.cartButton.addEventListener('click', function(event){
   thisProduct.processOrder();
 });
   }*/
- initOrderForm(){
+    initOrderForm(){
     const thisProduct = this;
 
     thisProduct.dom.form.addEventListener('submit', function(event){
@@ -218,10 +218,11 @@ thisProduct.dom.cartButton.addEventListener('click', function(event){
     thisProduct.dom.cartButton.addEventListener('click', function(event){
       event.preventDefault();
       thisProduct.processOrder();
+      thisProduct.addToCart();
     });
-  }
+    }
 
-  initAmountWidget(){
+    initAmountWidget(){
       const thisProduct = this;
 
       thisProduct.amountWidget = new AmountWidget(thisProduct.dom.amountWidgetElem);
@@ -233,7 +234,7 @@ thisProduct.dom.cartButton.addEventListener('click', function(event){
       });
     }
 
-  processOrder(){
+    processOrder(){
     const thisProduct = this;
     //console.log('OrderForm:', thisProduct);
 
@@ -295,12 +296,40 @@ thisProduct.dom.cartButton.addEventListener('click', function(event){
    /* multiply price by amount */
   price *= thisProduct.amountWidget.value;
 
+  thisProduct.priceSingle = price;
   // update calculated price in the HTML
   //console.log('Calculated price:', price);
   thisProduct.dom.priceElem.innerHTML = price;
-  }
+    }
 
+    addToCart(){
+      const thisProduct = this;
+
+      const productSummary = thisProduct.prepareCartProduct();
+
+      app.cart.add(productSummary);
+      //app.cart.add(thisProduct);
+    }
  
+    prepareCartProduct(){
+      const thisProduct = this;
+
+      const productSummary = {};
+
+      productSummary.id = thisProduct.id;
+
+      productSummary.name = thisProduct.data.name;
+
+      productSummary.amount = thisProduct.amountWidget.value;
+
+      productSummary.priceSingle = thisProduct.priceSingle;
+
+      productSummary.price = productSummary.priceSingle * productSummary.amount;
+
+      productSummary.params = {};
+
+      return productSummary;
+    }
 }
 
   class AmountWidget{
@@ -421,6 +450,12 @@ thisProduct.dom.cartButton.addEventListener('click', function(event){
         );
 
       });
+    }
+
+    add(menuProduct){
+      //const thisCart = this;
+
+      console.log('adding product', menuProduct);
     }
 
   }
