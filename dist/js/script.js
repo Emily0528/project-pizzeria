@@ -506,7 +506,9 @@ thisProduct.dom.cartButton.addEventListener('click', function(event){
 
       //console.log('adding product', menuProduct);
 
-      thisCart.products.push(menuProduct);
+      const cartProduct = new CartProduct(menuProduct, generatedDOM);
+        thisCart.products.push(cartProduct);
+  
       console.log('thisCart.products', thisCart.products);
     }
 
