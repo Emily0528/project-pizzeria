@@ -293,10 +293,11 @@ thisProduct.dom.cartButton.addEventListener('click', function(event){
     }
   }
 
+  thisProduct.priceSingle = price;
+
    /* multiply price by amount */
   price *= thisProduct.amountWidget.value;
 
-  thisProduct.priceSingle = price;
   // update calculated price in the HTML
   //console.log('Calculated price:', price);
   thisProduct.dom.priceElem.innerHTML = price;
