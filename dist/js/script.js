@@ -326,10 +326,46 @@ thisProduct.dom.cartButton.addEventListener('click', function(event){
 
       productSummary.price = productSummary.priceSingle * productSummary.amount;
 
-      productSummary.params = {};
+      //productSummary.params = {};
+      productSummary.params = thisProduct.prepareCartProductParams();
+
 
       return productSummary;
     }
+
+    prepareCartProductParams(){
+  const thisProduct = this;
+
+  const paramsSummary = {};
+
+  /* traversal of all categories (params) in thisProduct.data.params */
+  for(let paramId in thisProduct.data.params){
+    const param = thisProduct.data.params[paramId];
+
+    /* new object for the category */
+    paramsSummary[paramId] = {
+      label: param.label, 
+      options: {}
+    };
+
+    /* navigate through all options in this category */
+    for(let optionId in param.options){
+      const option = param.options[optionId];
+
+      /* checking whether the option is selected in the form */
+      const optionSelected = thisProduct.dom.form.querySelector(`[name="${paramId}"][value="${optionId}"]`)?.checked
+                             || (thisProduct.dom.form.querySelector(`[name="${paramId}"][value="${optionId}"]`)?.selected); 
+
+      /* if checked, we add it to the options object s*/
+      if(optionSelected){
+        paramsSummary[paramId].options[optionId] = option.label;
+      }
+    }
+  }
+
+  return paramsSummary;
+}
+
 }
 
   class AmountWidget{
