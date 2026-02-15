@@ -352,10 +352,10 @@ thisProduct.dom.cartButton.addEventListener('click', function(event){
     for(let optionId in param.options){
       const option = param.options[optionId];
 
-      /* checking whether the option is selected in the form */
-      const optionSelected = thisProduct.dom.form.querySelector(`[name="${paramId}"][value="${optionId}"]`)?.checked
-                             || (thisProduct.dom.form.querySelector(`[name="${paramId}"][value="${optionId}"]`)?.selected); 
+      const optionElem = thisProduct.dom.form.querySelector(`[name="${paramId}"][value="${optionId}"]`);
 
+      const optionSelected = optionElem && (optionElem.checked || optionElem.selected);
+                   
       /* if checked, we add it to the options object s*/
       if(optionSelected){
         paramsSummary[paramId].options[optionId] = option.label;
@@ -470,7 +470,11 @@ thisProduct.dom.cartButton.addEventListener('click', function(event){
       thisCart.dom.wrapper = element;
 
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(
-      select.cart.toggleTrigger
+        select.cart.toggleTrigger
+      );
+
+      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(
+        select.cart.productList
       );
     }
 
@@ -489,7 +493,16 @@ thisProduct.dom.cartButton.addEventListener('click', function(event){
     }
 
     add(menuProduct){
-      //const thisCart = this;
+      const thisCart = this;
+
+      /* generate HTML based on template */
+      const generatedHTML = templates.cartProduct(menuProduct);
+
+      /* replace HTML with DOM element */
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+
+      /* add an item to the product list in your cart */
+      thisCart.dom.productList.appendChild(generatedDOM);
 
       console.log('adding product', menuProduct);
     }
