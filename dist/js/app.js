@@ -66,3 +66,4 @@
 
   app.init();
 
+  export default app;  

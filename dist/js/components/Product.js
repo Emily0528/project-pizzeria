@@ -1,7 +1,6 @@
-import {select, classNames, templates} from './settings.js';
-import utils from './utils.js';
-import AmountWidget from './components/AmountWidget.js';
-import app from './app.js';
+import {select, classNames, templates} from '../settings.js';
+import utils from '../utils.js';
+import AmountWidget from './AmountWidget.js';
 
 class Product {
     constructor(id, data) {
@@ -30,6 +29,8 @@ class Product {
 
       /* create element using utils.createElementFromHTML */
       thisProduct.dom.wrapper = utils.createDOMFromHTML(generatedHTML);
+
+      thisProduct.element = thisProduct.dom.wrapper;
 
       /* find menu container */
       const menuContainer = document.querySelector(select.containerOf.menu);
@@ -179,23 +180,10 @@ class Product {
       thisProduct.dom.priceElem.innerHTML = price;
     }
 
-    addToCart(){
-      const thisProduct = this;
-        /*
-      const productSummary = thisProduct.prepareCartProduct();
+    addToCart() {
+   const thisProduct = this;
 
-      app.cart.add(productSummary);
-      //app.cart.add(thisProduct);
-
-      const event = new CustomEvent('add-to-cart', {
-        bubbles: true,
-        detail: {
-            product: thisProduct,
-        }
-      });
-
-      thisProduct.getElements.dispatchEvent(event);*/
-       //  app.cart.add(thisProduct.prepareCartProduct());
+   //  app.cart.add(thisProduct.prepareCartProduct());
    const event = new CustomEvent('add-to-cart', {
      bubbles: true,
      detail: {
@@ -204,7 +192,7 @@ class Product {
    }
    );
    thisProduct.element.dispatchEvent(event);
-    }
+}
  
     prepareCartProduct(){
       const thisProduct = this;
