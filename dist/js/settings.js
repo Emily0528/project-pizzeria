@@ -2,15 +2,21 @@
     templateOf: {
       menuProduct: "#template-menu-product",
       cartProduct: '#template-cart-product',
+      bookingWidget: '#template-booking-widget',
     },
     containerOf: {
       menu: "#product-list",
       cart: "#cart",
+      pages: "#pages",             // KONTAINER DLA PODSTRON
+      booking: ".booking-wrapper",
     },
     all: {
       menuProducts: "#product-list > .product",
       menuProductsActive: "#product-list > .product.active",
       formInputs: "input, select",
+    },
+    nav: {
+      links: '.main-nav a', // LINKI NAWIGACJI
     },
     menuProduct: {
       clickable: ".product__header",
@@ -26,6 +32,20 @@
         linkDecrease: 'a[href="#less"]',
         linkIncrease: 'a[href="#more"]',
       },
+      datePicker: {
+        wrapper: '.date-picker',
+        input: `input[name="date"]`,
+      },
+      hourPicker: {
+        wrapper: '.hour-picker',
+        input: 'input[type="range"]',
+        output: '.output',
+      },
+    },
+    booking: {
+      peopleAmount: '.people-amount',
+      hoursAmount: '.hours-amount',
+      tables: '.floor-plan .table',
     },
     cart: {
       productList: '.cart__order-summary',
@@ -56,6 +76,20 @@
     cart: {
       wrapperActive: 'active',
     },
+
+    booking: {
+      loading: 'loading',
+      tableBooked: 'booked',
+    },
+
+    nav: {
+      active: 'active',
+    },
+
+    pages: {
+      active: 'active',
+    },
+
   };
 
   export const settings = {
@@ -69,10 +103,30 @@
       defaultDeliveryFee: 20,
     },
 
+    hours: {
+      open: 12,
+      close: 24,
+    },
+
+    datePicker: {
+      maxDaysInFuture: 14,
+    },
+
+    booking: {
+      tableIdAttribute: 'data-table',
+    },
+
+
     db: {
       url: '//localhost:3131',
       products: 'products',
       orders: 'orders',
+      bookings: 'bookings',
+      events: 'events',
+      dateStartParamKey: 'date_gte',
+      dateEndParamKey: 'date_lte',
+      notRepeatParam: 'repeat=false',
+      repeatParam: 'repeat_ne=false',
     },
 
   };
@@ -81,5 +135,10 @@
     menuProduct: Handlebars.compile(
       document.querySelector(select.templateOf.menuProduct).innerHTML
     ),
-    cartProduct: Handlebars.compile(document.querySelector(select.templateOf.cartProduct).innerHTML),
+    cartProduct: Handlebars.compile(
+      document.querySelector(select.templateOf.cartProduct).innerHTML
+    ),
+    bookingWidget: Handlebars.compile(     
+      document.querySelector(select.templateOf.bookingWidget).innerHTML
+    ),
   };
