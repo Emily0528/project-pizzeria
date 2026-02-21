@@ -10,7 +10,10 @@ class Booking {
 
     thisBooking.render(element);
     thisBooking.initWidgets();
+    thisBooking.initTables();
     thisBooking.getData();
+
+    thisBooking.selectedTable = null;
 
     //console.log('thisBooking', thisBooking);
     //console.log('wrapper', wrapper);
@@ -160,6 +163,14 @@ class Booking {
         table.classList.remove(classNames.booking.tableBooked);
       }
     }
+
+    const selected = thisBooking.dom.tablesWrapper.querySelector('.' + classNames.booking.tableSelected);
+
+    if(selected){
+      selected.classList.remove(classNames.booking.tableSelected);
+    }
+
+    thisBooking.selectedTable = null;
   }
 
   render(element) {
@@ -185,6 +196,48 @@ class Booking {
     thisBooking.dom.hourPicker = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.wrapper);
 
     thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
+
+    thisBooking.dom.tablesWrapper = thisBooking.dom.wrapper.querySelector('.floor-plan');
+  }
+
+  initTables() {
+    const thisBooking = this;
+
+    thisBooking.dom.tablesWrapper.addEventListener('click', function(event){
+
+      const clickedTable = event.target.closest(select.booking.tables);
+
+      if(!clickedTable){
+        return;
+      }
+
+      const tableId = parseInt(clickedTable.getAttribute(settings.booking.tableIdAttribute));
+
+      if(clickedTable.classList.contains(classNames.booking.tableBooked)){
+        alert('Table is already booked');
+        return;
+      }
+
+      if(thisBooking.selectedTable === tableId){
+
+        clickedTable.classList.remove(classNames.booking.tableSelected);
+
+        thisBooking.selectedTable = null;
+
+        return;
+      }
+
+      const selectedTable = thisBooking.dom.tablesWrapper.querySelector('.' + classNames.booking.tableSelected);
+
+      if(selectedTable){
+        selectedTable.classList.remove(classNames.booking.tableSelected);
+      }
+
+      clickedTable.classList.add(classNames.booking.tableSelected);
+
+      thisBooking.selectedTable = tableId;
+
+    });
   }
 
   initWidgets() {
@@ -206,7 +259,6 @@ class Booking {
       thisBooking.updateDOM();
     });
   }
-
 }
 
 export default Booking;
