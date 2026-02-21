@@ -1,8 +1,19 @@
   import {settings, select, classNames} from './settings.js';
   import Product from './components/Product.js';
   import Cart from './components/Cart.js';
+  import Booking from './components/Booking.js';
 
   const app = {
+    initBooking: function(){
+      const thisApp = this;
+
+      /* find booking container */
+      const bookingElem = document.querySelector(select.containerOf.booking);
+
+      /* create Booking instance */
+      thisApp.booking = new Booking(bookingElem);
+    },
+
     initPages: function() {
       const thisApp = this;
 
@@ -22,7 +33,8 @@
       }
 
       //console.log('pageMatchingHash', pageMatchingHash);
-      thisApp.activatePage(idFromHash);
+      //thisApp.activatePage(idFromHash);
+      thisApp.activatePage(pageMatchingHash);
 
       for(let link of thisApp.navLinks){
         link.addEventListener('click', function(event){
@@ -85,7 +97,7 @@
           return rawResponse.json();
         })
         .then(function(parsedResponse){
-          console.log('parsedResponse:', parsedResponse);
+          //console.log('parsedResponse:', parsedResponse);
 
           /* save parsedResponse as thisApp.data.products */
           thisApp.data.products = parsedResponse;
@@ -95,7 +107,7 @@
 
         });
 
-      console.log('thisApp.data', JSON.stringify(thisApp.data));
+      //console.log('thisApp.data', JSON.stringify(thisApp.data));
     },
 
     initCart: function(){
@@ -124,6 +136,7 @@
 
       thisApp.initData();
       thisApp.initCart();
+      thisApp.initBooking();
     },
   };
 
