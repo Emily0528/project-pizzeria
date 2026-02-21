@@ -240,6 +240,51 @@ class Booking {
     });
   }
 
+  sendBooking() {
+    const thisBooking = this;
+
+    const url = settings.db.url + '/' + 'bookings';
+
+    const payload = {
+      date: thisBooking.datePicker.value,
+      hour: thisBooking.hourPicker.value,
+      table: thisBooking.selectedTable || null,
+      duration: thisBooking.hoursAmountWidget.value,
+      ppl: thisBooking.peopleAmountWidget.value,
+      starters: [],
+      phone: thisBooking.dom.wrapper.querySelector('[name="phone"]').value,
+      address: thisBooking.dom.wrapper.querySelector('[name="address"]').value,
+    };
+
+    const startersCheckboxes = thisBooking.dom.wrapper.querySelectorAll('[name="starter"]:checked');
+    for (let checkbox of startersCheckboxes) {
+      payload.starters.push(checkbox.value);
+    }
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    };
+
+    fetch(url, options)
+      .then(function(response){
+        if(response.ok){
+          thisBooking.makeBooked(
+            payload.date,
+            payload.hour,
+            payload.duration,
+            payload.table
+          );
+          thisBooking.updateDOM();
+        } else {
+          alert('Error: Nie udało się wysłać rezerwacji');
+        }
+      });
+  }
+
   initWidgets() {
     const thisBooking = this;
 
@@ -257,6 +302,11 @@ class Booking {
 
     thisBooking.dom.wrapper.addEventListener('updated', function(){
       thisBooking.updateDOM();
+    });
+
+    thisBooking.dom.wrapper.addEventListener('submit', function(event){
+      event.preventDefault();
+      thisBooking.sendBooking();
     });
   }
 }
