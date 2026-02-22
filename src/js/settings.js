@@ -3,12 +3,14 @@
       menuProduct: "#template-menu-product",
       cartProduct: '#template-cart-product',
       bookingWidget: '#template-booking-widget',
+      homePage: '#template-home',
     },
     containerOf: {
       menu: "#product-list",
       cart: "#cart",
-      pages: "#pages",             // KONTAINER DLA PODSTRON
+      pages: "#pages",             
       booking: ".booking-wrapper",
+      home: '#home',
     },
     all: {
       menuProducts: "#product-list > .product",
@@ -16,7 +18,7 @@
       formInputs: "input, select",
     },
     nav: {
-      links: '.main-nav a', // LINKI NAWIGACJI
+      links: '.main-nav a',
     },
     menuProduct: {
       clickable: ".product__header",
@@ -141,5 +143,8 @@
     ),
     bookingWidget: Handlebars.compile(     
       document.querySelector(select.templateOf.bookingWidget).innerHTML
+    ),
+    homePage: Handlebars.compile(
+    document.querySelector(select.templateOf.homePage).innerHTML
     ),
   };
