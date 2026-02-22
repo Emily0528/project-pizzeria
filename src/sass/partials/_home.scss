@@ -18,7 +18,7 @@
 
 .home-wrapper {
     margin: ($base-size * 3.5) auto;
-    padding: ($base-size * 6) ($base-size * 4);
+    padding: ($base-size * 4);
     background: $color-light;
     border-bottom: 1px solid lighten($color-dark, 70%);
     border-radius: $radius;
@@ -29,8 +29,7 @@
   grid-gap: 5px;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: auto auto;
-
-  
+  padding-bottom: ($base-size * 2);
 }
 
 .home-tile {
@@ -104,6 +103,50 @@
     }
   }
 
+/* Carusel */
+.carousel-wrapper {
+  margin-top: 40px;
+  padding-bottom: ($base-size * 2);
+}
+
+
+.review-slide {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  width: 600px;
+  padding-bottom: ($base-size * 2);
+}
+
+
+.review-image img {
+  width: 250px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: $radius;
+}
+
+
+.review-content {
+  flex: 1;
+}
+
+.review-title {
+  font-size: 1.2rem;
+
+}
+
+.review-quote {
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.review-author {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Gallery */
 .gallery-wrapper {
   margin-top: ($base-size * 4);
 }

@@ -1,5 +1,7 @@
 import {templates} from '../settings.js';
 
+/* global Flickity */
+
 class Home {
   constructor(wrapper, onNavigate){
     const thisHome = this;
@@ -39,6 +41,31 @@ class Home {
       }
       ];
 
+    const reviews = [
+
+    {
+      img: "assets/pizza-1.jpg",
+      title: "Great venue",
+      quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      author: "John Smith"
+    },
+
+    {
+      img: "assets/pizza-2.jpg",
+      title: "Good snacks",
+      quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      author: "Anna Kowalski"
+    },
+
+    {
+      img: "assets/pizza-3.jpg",
+      title: "Best srevice",
+      quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      author: "Michael Lee"
+    }
+
+    ];
+
     const images = [
       'assets/pizza-4.jpg',
       'assets/pizza-5.jpg',
@@ -52,12 +79,15 @@ class Home {
     const generatedHTML = templates.homePage({
 
       tiles: tiles,
+      reviews,
       images: images
 
     });
 
     //const generatedHTML = templates.homePage({ tiles });
     thisHome.dom.wrapper.innerHTML = generatedHTML;
+
+    thisHome.initCarousel();
 
     thisHome.dom.wrapper.querySelectorAll('.home-tile').forEach((tile, index) => {
       const tileData = tiles[index];
@@ -71,6 +101,23 @@ class Home {
       }
     });
   }
+
+  initCarousel() {
+
+  const elem = document.querySelector('.carousel');
+
+  new Flickity(elem, {
+
+    cellAlign: 'left',
+    contain: true,
+    wrapAround: true,
+    autoPlay: 3000,
+    pageDots: true,
+    prevNextButtons: false
+
+  });
+
+}
 
   setActiveNav(id) {
     document.querySelectorAll('.main-nav a').forEach(link => {

@@ -76,7 +76,7 @@
  </div>
 
   <script id="template-home" type="text/x-handlebars-template">
-    <div class="home-wrapper container">
+    <div class="home-wrapper">
       <div class="home-tiles">
         {{#each tiles}}
         <div class="home-tile {{#if full}}always-visible{{/if}}"
@@ -89,6 +89,44 @@
         </div>
         {{/each}}
       </div>
+      <div class="carousel-wrapper">
+
+  <div class="carousel">
+
+    {{#each reviews}}
+
+    <div class="carousel-cell">
+
+      <div class="review-slide">
+
+        <div class="review-image">
+          <img src="{{img}}" alt="Review">
+        </div>
+
+        <div class="review-content">
+          <h3 class="review-title">
+            {{title}}
+          </h3>
+
+          <p class="review-quote">
+            "{{quote}}"
+          </p>
+
+          <p class="review-author">
+            — {{author}}
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    {{/each}}
+
+  </div>
+
+</div>
       <div class="gallery-wrapper">
         <div class="gallery-grid">
           {{#each images}}
