@@ -65,7 +65,7 @@
 
   <div id="pages">
     <section id="home">
-      <div class="container"></div>
+      <div id="tilesContainer" class="tiles container"></div>
    </section>
    <section id="order">
      <div id="product-list" class="product-list container"></div>
@@ -78,8 +78,17 @@
   <script id="template-home" type="text/x-handlebars-template">
     <div class="home-wrapper container">
       <div class="home-tiles">
-    
+      {{#each tiles}}
+      <div class="home-tile {{#if full}}always-visible{{/if}}"
+           {{#if img}}style="background-image:url('{{img}}')"{{/if}}
+           {{#if color}}style="background-color:{{color}};"{{/if}}>
+        <div class="tile-content">
+          <h3 class="home-tile__title">{{title}}</h3>
+          <p class="home-tile__quote">{{quote}}</p>
+        </div>
       </div>
+    {{/each}}
+    </div>
     </div>
 </script>
 

@@ -126,8 +126,16 @@
     },
 
     initHome: function() {
-      const homeElem = document.querySelector(select.containerOf.home);
-      this.home = new Home(homeElem);
+      const thisApp = this;
+       
+      const homeContainer = document.getElementById('tilesContainer');
+       thisApp.home = new Home(homeContainer, function(pageId){
+          console.log('Przełączam stronę na:', pageId); 
+          thisApp.activatePage(pageId);
+          window.location.hash = '#/' + pageId;
+        });
+
+      thisApp.home.render();
     },
 
     init: function () {
@@ -142,10 +150,8 @@
 
       thisApp.initData();
       thisApp.initCart();
-      //thisApp.initHome();
       thisApp.initBooking();
-      thisApp.home = new Home();
-      thisApp.home.render();
+      thisApp.initHome();
     },
   };
 
