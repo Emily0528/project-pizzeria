@@ -78,17 +78,41 @@
   <script id="template-home" type="text/x-handlebars-template">
     <div class="home-wrapper container">
       <div class="home-tiles">
-      {{#each tiles}}
-      <div class="home-tile {{#if full}}always-visible{{/if}}"
+        {{#each tiles}}
+        <div class="home-tile {{#if full}}always-visible{{/if}}"
            {{#if img}}style="background-image:url('{{img}}')"{{/if}}
            {{#if color}}style="background-color:{{color}};"{{/if}}>
-        <div class="tile-content">
-          <h3 class="home-tile__title">{{title}}</h3>
-          <p class="home-tile__quote">{{quote}}</p>
+          <div class="tile-content">
+            <h3 class="home-tile__title">{{title}}</h3>
+            <p class="home-tile__quote">{{quote}}</p>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+      <div class="gallery-wrapper">
+        <div class="gallery-grid">
+          {{#each images}}
+          <div class="gallery-item">
+            <img src="{{this}}" alt="Gallery image">
+            <div class="gallery-overlay">
+              <div class="gallery-icons">
+                <a href="#" class="icon icon-heart">
+                  <i class="fas fa-heart"></i>
+                </a>
+                <a href="#" class="icon icon-share">
+                  <i class="fas fa-share-alt"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+        <div class="gallery-footer">
+          <a href="#" class="gallery-link">
+            View more on instagram
+          </a>
         </div>
       </div>
-    {{/each}}
-    </div>
     </div>
 </script>
 

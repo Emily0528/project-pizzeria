@@ -39,7 +39,24 @@ class Home {
       }
       ];
 
-    const generatedHTML = templates.homePage({ tiles });
+    const images = [
+      'assets/pizza-4.jpg',
+      'assets/pizza-5.jpg',
+      'assets/pizza-6.jpg',
+      'assets/pizza-7.jpg',
+      'assets/pizza-8.jpg',
+      'assets/pizza-9.jpg'
+    ];
+
+
+    const generatedHTML = templates.homePage({
+
+      tiles: tiles,
+      images: images
+
+    });
+
+    //const generatedHTML = templates.homePage({ tiles });
     thisHome.dom.wrapper.innerHTML = generatedHTML;
 
     thisHome.dom.wrapper.querySelectorAll('.home-tile').forEach((tile, index) => {
@@ -48,9 +65,9 @@ class Home {
         tile.style.cursor = 'pointer';
         //tile.addEventListener('click', () => thisHome.onNavigate(tileData.link));
         tile.addEventListener('click', () => {
-  console.log('Kliknięto kafelek, pageId =', tileData.link);
-  thisHome.onNavigate(tileData.link);
-});
+        //console.log('Kliknięto kafelek, pageId =', tileData.link);
+        thisHome.onNavigate(tileData.link);
+        });
       }
     });
   }
