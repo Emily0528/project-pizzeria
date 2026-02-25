@@ -133,9 +133,12 @@ class Booking {
 
   updateDOM(){
     const thisBooking = this;
-
+    /*
     thisBooking.date = thisBooking.datePicker.value;
     thisBooking.hour = utils.hourToNumber(thisBooking.hourPicker.value);
+    */
+    thisBooking.date = thisBooking.datePicker.value || utils.dateToStr(new Date());
+    thisBooking.hour = utils.hourToNumber(thisBooking.hourPicker.value || '12:00'); // np. domyślna godzina
 
     let allAvailabe = false;
 
@@ -246,8 +249,8 @@ class Booking {
     const url = settings.db.url + '/' + 'bookings';
 
     const payload = {
-      date: thisBooking.datePicker.value,
-      hour: thisBooking.hourPicker.value,
+      date: thisBooking.datePicker.value || utils.dateToStr(new Date()),
+      hour: thisBooking.hourPicker.value || '12:00',
       table: thisBooking.selectedTable || null,
       duration: thisBooking.hoursAmountWidget.value,
       ppl: thisBooking.peopleAmountWidget.value,

@@ -1,3 +1,3 @@
 #project-pizzeria
 
-Moja strona: https://project-pizzeria--Uls02.replit.app
+Moja strona: [Odwiedź moją strone pizzeri](https://project-pizzeria--Uls02.replit.app)
